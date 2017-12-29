@@ -1,5 +1,16 @@
 // @flow
 
+export type HotelsFilter = {
+  latitude: number,
+  longitude: number,
+  checkin: string | null,
+  checkout: string | null,
+  roomsConfiguration: {
+    adultsCount: number,
+    children: [],
+  },
+};
+
 export type ReduxState = {|
   user:
     | {|
@@ -20,6 +31,9 @@ export type ReduxState = {|
     // this is what our system suggests for 'userTyped' field
     systemSuggested: string,
   },
+  hotelsFilter: {
+    filter: HotelsFilter,
+  },
 |};
 
 export type ReduxActions =
@@ -27,4 +41,6 @@ export type ReduxActions =
   | {| type: 'login', accessToken: string |}
   | {| type: 'logout' |}
   // search actions
-  | {| type: 'updateFieldValue', identifier: string, value: string |};
+  | {| type: 'updateFieldValue', identifier: string, value: string |}
+  // hotel filters actions
+  | {| type: 'setHotelFilters', filter: HotelsFilter |};

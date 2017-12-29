@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { graphql } from 'react-relay';
 import { PublicApiRenderer } from '@kiwicom/react-native-app-relay';
-import moment from 'moment';
 
 import MapView from './MapScreen';
 
@@ -14,29 +13,6 @@ type Props = {|
 |};
 
 class AllHotelsMap extends React.Component<Props> {
-  searchVariables: Object;
-
-  constructor(props: Props) {
-    super(props);
-
-    // todo will be replaced with props from code package
-    this.searchVariables = {
-      latitude: 50.08,
-      longitude: 14.44,
-      checkin: moment()
-        .add(1, 'week')
-        .startOf('isoWeek')
-        .format('YYYY-MM-DD'),
-      checkout: moment()
-        .add(1, 'week')
-        .endOf('isoWeek')
-        .format('YYYY-MM-DD'),
-      roomsConfiguration: {
-        adultsCount: 1,
-      },
-    };
-  }
-
   renderInnerComponent = (props: AllHotelsMapQueryResponse) => (
     <MapView data={props.allAvailableHotels} />
   );
@@ -52,7 +28,7 @@ class AllHotelsMap extends React.Component<Props> {
           }
         `}
         variables={{
-          search: this.searchVariables,
+          search: this.props.hotelsFilter,
         }}
         render={this.renderInnerComponent}
         cacheConfig={{ force: true }}

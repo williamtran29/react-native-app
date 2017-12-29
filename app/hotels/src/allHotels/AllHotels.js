@@ -4,7 +4,6 @@ import * as React from 'react';
 import { graphql } from 'react-relay';
 import { PublicApiRenderer } from '@kiwicom/react-native-app-relay';
 import { Layout } from '@kiwicom/react-native-app-common';
-import moment from 'moment';
 
 import SearchForm from './searchForm/SearchForm';
 import FilterStripe from '../filter/FilterStripe';
@@ -15,40 +14,16 @@ import type { SearchParametersType } from './searchForm/SearchParametersType';
 
 type Props = {|
   openSingleHotel: (id: string) => void,
+  onFilterChange: (filter: SearchParametersType) => void,
 |};
 
-type State = {|
-  search: SearchParametersType,
-|};
-
-export default class AllHotelsSearch extends React.Component<Props, State> {
-  state = {
-    search: {
-      latitude: 50.08,
-      longitude: 14.44,
-      checkin: null,
-      checkout: null,
-      roomsConfiguration: {
-        adultsCount: 1,
-        children: [],
-      },
-    },
-  };
-
+export default class AllHotelsSearch extends React.Component<Props, void> {
   handleSearchChange = (search: SearchParametersType) => {
-    this.setState({
-      search: {
-        latitude: search.latitude,
-        longitude: search.longitude,
-        checkin: search.checkin,
-        checkout: search.checkout,
-        roomsConfiguration: search.roomsConfiguration,
-      },
-    });
+    this.props.onFilterChange(search);
   };
 
   isReadyToSearch = () => {
-    const { search } = this.state;
+    const { hotelsFilter: search } = this.props;
     return (
       search.latitude && search.longitude && search.checkin && search.checkout
     );
@@ -62,7 +37,7 @@ export default class AllHotelsSearch extends React.Component<Props, State> {
   );
 
   render = () => {
-    const { search } = this.state;
+    const { hotelsFilter } = this.props;
     return (
       <Layout>
         <SearchForm onChange={this.handleSearchChange} />
@@ -77,11 +52,7 @@ export default class AllHotelsSearch extends React.Component<Props, State> {
               }
             `}
             variables={{
-              search: {
-                ...search,
-                checkin: moment(search.checkin).format('YYYY-MM-DD'),
-                checkout: moment(search.checkout).format('YYYY-MM-DD'),
-              },
+              search: hotelsFilter,
             }}
             render={this.renderInnerComponent}
             cacheConfig={{

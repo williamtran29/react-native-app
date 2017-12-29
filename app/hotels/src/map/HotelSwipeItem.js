@@ -8,10 +8,12 @@ import idx from 'idx';
 
 import type { HotelSwipeItem as HotelSwipeItemData } from './__generated__/HotelSwipeItem.graphql';
 
-type Props = {|
+type Props_ = {
   width: number,
   data: HotelSwipeItemData,
-|};
+};
+
+type Props = Props_ & $Shape<Props_>;
 
 const styles = StyleSheet.create({
   description: {

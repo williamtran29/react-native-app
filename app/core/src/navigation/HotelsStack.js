@@ -1,16 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { withMappedNavigationAndConfigProps as withMappedProps } from 'react-navigation-props-mapper';
-import {
-  AllHotels,
-  AllHotelsMap,
-  SingleHotel,
-  GalleryGrid,
-} from '@kiwicom/react-native-app-hotels';
-import { Ionicons } from '@expo/vector-icons';
+import { SingleHotel, GalleryGrid } from '@kiwicom/react-native-app-hotels';
 
+import AllHotelsNavigationScreen from '../screens/hotels/AllHotelsNavigationScreen';
+import AllHotelsMapNavigationScreen from '../screens/hotels/AllHotelsMapNavigationScreen';
 import type { Navigation } from '../types/Navigation';
 
 type Props = {|
@@ -24,38 +19,10 @@ type InjectorProps = {|
 
 export default {
   AllHotels: {
-    screen: class AllHotelsNavigationScreen extends React.Component<Props> {
-      static navigationOptions = (props: Props) => {
-        function goToAllHotelsMap() {
-          props.navigation.navigate('AllHotelsMap');
-        }
-
-        return {
-          headerTitle: 'Hotels',
-          headerRight: (
-            <TouchableOpacity
-              style={{ marginHorizontal: 10 }}
-              onPress={goToAllHotelsMap}
-            >
-              <Ionicons name="md-map" size={30} color="#fff" />
-            </TouchableOpacity>
-          ),
-        };
-      };
-
-      openSingleHotel = (id: string) =>
-        this.props.navigation.navigate('SingleHotel', { hotelId: id });
-
-      render = () => <AllHotels openSingleHotel={this.openSingleHotel} />;
-    },
+    screen: AllHotelsNavigationScreen,
   },
   AllHotelsMap: {
-    screen: function AllHotelsMapNavigationScreen(props: Props) {
-      function goToHotel() {
-        props.navigation.navigate('SingleHotel');
-      }
-      return <AllHotelsMap onGoToSingleHotel={goToHotel} />;
-    },
+    screen: AllHotelsMapNavigationScreen,
     navigationOptions: {
       headerTitle: 'Map',
     },
